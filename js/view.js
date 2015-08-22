@@ -37,8 +37,9 @@ var View = function(){
 	
 	updateWindowSize();
 	
-	this.$canvas = document.getElementById("gameCanvas");
-	global.processingInstance = new Processing(this.$canvas, sketchProc);
+	this.canvas = document.getElementById("gameCanvas");
+	this.$canvas = $("#gameCanvas");
+	global.processingInstance = new Processing(this.canvas, sketchProc);
 };
 	
 View.prototype.makeBodyDiv = function(id, x, y, width, height, onClick){

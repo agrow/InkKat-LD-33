@@ -14,7 +14,6 @@ var Model = function(){
 	
 	this.cat = {
 		bottom: {x:0, y:0},
-		bottomToHead: {x:0, y:0}
 	};
 	/* cat abilities
 	 *  var head = this.initPart();
@@ -54,7 +53,6 @@ Model.prototype.initGameViewElements = function(){
 	this.buildCatParts();
 	
 	this.updateCatPosition(500, 250);
-	this.findBottomToHead();
 };
 
 Model.prototype.buildSleepingParts = function(){
@@ -219,21 +217,6 @@ Model.prototype.buildCatParts = function(){
 
 // Wishlist: add extra pieces
 
-// Needs to be called after updateCatPosition is called at least once
-// NOTE: Should never change so long as the leg update doesn't change
-Model.prototype.findBottomToHead = function(){
-	var headPos = this.partMap["catBody"].pos;
-	this.cat.bottom = {
-		x: this.partMap["catFpaw1"].pos.x,
-		y: this.partMap["catFpaw1"].pos.y + this.partMap["catFpaw1"].height
-	};
-	
-	this.cat.findBottomToHead = {
-		x: this.cat.bottom.x - headPos.x,
-		y: this.cat.bottom.y - headPos.y
-	};
-};
-
 Model.prototype.updateCatPosition = function(x, y){
 	this.partMap["catBody"].pos.x = x;
 	this.partMap["catBody"].pos.y = y;
@@ -244,6 +227,18 @@ Model.prototype.updateCatPosition = function(x, y){
 		this.catParts[i].updatePos();
 		global.view.setDivPos(this.catParts[i].divID, this.catParts[i].pos);
 	}
+	
+	this.cat.bottom = {
+		x: this.partMap["catFpaw1"].pos.x,
+		y: this.partMap["catFpaw1"].pos.y + this.partMap["catFpaw1"].height
+	};
+};
+
+// NOTE: this.findBottomToHead must have been called at least once for the values to be good
+Model.prototype.moveCatBottomToPosition = function(x, y){
+	var catBodyPos = this.partMap["catBody"].pos;
+	
+	this.updateCatPosition(x + (catBodyPos.x -this.cat.bottom.x), y + (catBodyPos.y - this.cat.bottom.y));
 };
 	
 Model.prototype.processingSetup = function(){
