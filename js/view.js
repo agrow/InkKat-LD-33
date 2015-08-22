@@ -21,6 +21,14 @@ var sketchProc = function(processing){
 	processing.setup = global.model.processingSetup;
 	processing.draw = global.model.processingDraw;
 };
+
+jQuery.fn.rotate = function(degrees) {
+    $(this).css({'-webkit-transform' : 'rotate('+ degrees +'deg)',
+                 '-moz-transform' : 'rotate('+ degrees +'deg)',
+                 '-ms-transform' : 'rotate('+ degrees +'deg)',
+                 'transform' : 'rotate('+ degrees +'deg)'});
+    return $(this);
+};
 	
 // Constructor ///////////////////////////////////////////////////
 var View = function(){
@@ -29,8 +37,8 @@ var View = function(){
 	
 	updateWindowSize();
 	
-	var canvas = document.getElementById("gameCanvas");
-	global.processingInstance = new Processing(canvas, sketchProc);
+	this.$canvas = document.getElementById("gameCanvas");
+	global.processingInstance = new Processing(this.$canvas, sketchProc);
 };
 	
 View.prototype.makeBodyDiv = function(id, x, y, width, height, onClick){
@@ -57,6 +65,11 @@ View.prototype.makeDiv = function(params){
 		
 	return $div;
 	
+};
+
+View.prototype.setDivPos = function(divID, pos){
+	var str = "#" + divID;
+	$(str).offset({top: pos.y + global.canvasHeightOffset, left: pos.x + global.canvasWidthOffset});
 };
 
 return View;
