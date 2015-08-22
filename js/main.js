@@ -14,4 +14,6 @@ var init = function(){
 	global.model = new Model();
 	global.view = new View();
 	global.controller = new Controller();
+	
+	global.model.initGameViewElements();
 };

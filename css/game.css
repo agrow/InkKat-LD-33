@@ -1,4 +1,13 @@
 
 canvas{
 	position: absolute;
+	margin: 0px;
+}
+
+.bodyDiv{
+	position:absolute;
+	border-color: #FFCC66;
+    border-style: solid;
+    border-width: 1px;
+    margin: 0px;
 }
