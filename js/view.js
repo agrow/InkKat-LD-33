@@ -40,6 +40,65 @@ var View = function(){
 	this.canvas = document.getElementById("gameCanvas");
 	this.$canvas = $("#gameCanvas");
 	global.processingInstance = new Processing(this.canvas, sketchProc);
+	
+	this.makeBars(100, 15, 400, 20);
+};
+
+View.prototype.makeBars = function(x, y, width, height){
+	var totalWidth = width;
+	global.bars = [];
+	
+	var params = {
+		id: "exciteFull", top: y + global.canvasHeightOffset, left: x+ global.canvasWidthOffset,
+		width: totalWidth, height:height, class: "barDiv"
+	};
+	var $div = this.makeDiv(params);
+	global.bars[params.id] = {
+		id: params.id,
+		$div: $div
+	};
+	$(document.body).append($div);
+	$div.offset({top: params.top, left: params.left});
+	$div.css("zIndex", 10);
+	
+	params = {
+		id: "exciteValue", top: y + global.canvasHeightOffset, left: x+ global.canvasWidthOffset,
+		width: totalWidth-10, height:height, class: "barDiv" // VISABILITY TEST
+	};
+	$div = this.makeDiv(params);
+	global.bars[params.id] = {
+		id: params.id,
+		$div: $div
+	};
+	$(document.body).append($div);
+	$div.offset({top: params.top, left: params.left});
+	$div.css("zIndex", 15);
+	
+	params = {
+		id: "sleepFull", top: y + height*2 + global.canvasHeightOffset, left: x+ global.canvasWidthOffset,
+		width: totalWidth, height:height, class: "barDiv"
+	};
+	$div = this.makeDiv(params);
+	global.bars[params.id] = {
+		id: params.id,
+		$div: $div
+	};
+	$(document.body).append($div);
+	$div.offset({top: params.top, left: params.left});
+	$div.css("zIndex", 10);
+	
+	params = {
+		id: "sleepValue", top: y + height*2 + global.canvasHeightOffset, left: x+ global.canvasWidthOffset,
+		width: totalWidth - 10, height:height , class: "barDiv" /// VISABILITY TEST
+	};
+	$div = this.makeDiv(params);
+	global.bars[params.id] = {
+		id: params.id,
+		$div: $div
+	};
+	$(document.body).append($div);
+	$div.offset({top: params.top, left: params.left});
+	$div.css("zIndex", 15);
 };
 	
 View.prototype.makeBodyDiv = function(id, x, y, width, height, onClick){
@@ -58,7 +117,7 @@ View.prototype.makeBodyDiv = function(id, x, y, width, height, onClick){
 };
 	
 View.prototype.makeDiv = function(params){
-	console.log("making div");
+	console.log("making div", params.id);
 	
 	var $div = $("<div>", {id: params.id, class: params.class, width: params.width, height: params.height});
 						
@@ -71,6 +130,13 @@ View.prototype.makeDiv = function(params){
 View.prototype.setDivPos = function(divID, pos){
 	var str = "#" + divID;
 	$(str).offset({top: pos.y + global.canvasHeightOffset, left: pos.x + global.canvasWidthOffset});
+};
+
+View.prototype.setDivDimensions = function(divID, width, height){
+	var str = "#" + divID;
+	$(str).width(width);
+	$(str).height(height);
+	
 };
 
 return View;

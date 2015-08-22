@@ -11,3 +11,19 @@ canvas{
     border-width: 1px;
     margin: 0px;
 }
+
+.barDiv{
+	position:absolute;
+	border-color: #BB6789;
+    border-style: solid;
+    border-width: 1px;
+    margin: 0px;
+}
+
+.abilityDiv{
+	position:absolute;
+	border-color: #6789CC;
+    border-style: solid;
+    border-width: 1px;
+    margin: 0px;
+}

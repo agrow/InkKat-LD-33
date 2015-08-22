@@ -12,17 +12,32 @@ var Model = function(){
 	// indexed by divID of part
 	this.partMap = [];
 	
+	this.abilities = [];
+	this.abilityMap = [];
+	
 	this.cat = {
 		bottom: {x:0, y:0},
 	};
-	/* cat abilities
+	
+	this.initAbilities();
+};
+
+/* cat abilities
 	 *  var head = this.initPart();
 		var teeth = this.initPart();
 		var tongue = this.initPart();
 		var paws = this.initPart();
 		var voice = this.initPart();
 	 */
-	
+Model.prototype.initAbilities = function(){
+	this.abilities.push({ id:"headAbility" });
+	this.abilities.push({ id:"teethAbility" });
+	this.abilities.push({ id:"tongueAbility" });
+	this.abilities.push({ id:"pawAbility" });
+	this.abilities.push({ id:"voiceAbility" });
+	for(var i = 0; i < this.abilities.length; i++){
+		this.abilityMap[this.abilities[i].id] = this.abilities[i];
+	}
 };
 
 Model.prototype.initPart = function(id, owner){
@@ -48,6 +63,7 @@ Model.prototype.initPart = function(id, owner){
 };
 
 Model.prototype.initGameViewElements = function(){
+	
 	
 	this.buildSleepingParts();
 	this.buildCatParts();
