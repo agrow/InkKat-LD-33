@@ -62,7 +62,7 @@ View.prototype.makeDiv = function(params){
 	
 	var $div = $("<div>", {id: params.id, class: params.class, width: params.width, height: params.height});
 						
-	if(params.onClick !== null) $div.click = params.onClick;
+	if(params.onClick !== null) $div.click(params.onClick);
 		
 	return $div;
 	

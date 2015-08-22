@@ -6,7 +6,7 @@ var scope;
 var Model = function(){
 	scope = this;  // Works only because Model is a singleton
 	
-	this.sleepingParts = [];
+	this.humanParts = [];
 	this.catParts = [];
 	
 	// indexed by divID of part
@@ -38,7 +38,7 @@ Model.prototype.initPart = function(id, owner){
 		updatePos: null,
 	};
 	
-	if(owner === "human") this.sleepingParts.push(part);
+	if(owner === "human")  this.humanParts.push(part);
 	else this.catParts.push(part);
 	
 	this.partMap[part.divID] = part;
@@ -51,6 +51,7 @@ Model.prototype.initGameViewElements = function(){
 	
 	this.buildSleepingParts();
 	this.buildCatParts();
+	this.finishBuildingParts();
 	
 	this.updateCatPosition(500, 250);
 };
@@ -72,7 +73,7 @@ Model.prototype.buildSleepingParts = function(){
 	current.width = 1000-current.pos.x; current.height = 150;
 	current.type = "head"; 
 	//id, x, y, width, height, onClick
-	global.view.makeBodyDiv(current.divID, current.pos.x, current.pos.y, current.width, current.height, current.onClick);
+	 
 	
 	current = eye1;
 	current.pos.x = 900; current.pos.y = 355;
@@ -82,45 +83,45 @@ Model.prototype.buildSleepingParts = function(){
 	};
 	current.width = 20; current.height = 30;
 	current.type = "eye"; 
-	global.view.makeBodyDiv(current.divID, current.pos.x, current.pos.y, current.width, current.height, current.onClick);
+	 
 	
 	current = eye2;
 	current.pos.x = 900; current.pos.y = 415;
 	current.width = 20; current.height = 30;
 	current.type = "eye"; 
-	global.view.makeBodyDiv(current.divID, current.pos.x, current.pos.y, current.width, current.height, current.onClick);
+	 
 	
 	current = nose;
 	current.pos.x = 860; current.pos.y = 395;
 	current.width = 30; current.height = 10;
 	current.type = "nose"; 
-	global.view.makeBodyDiv(current.divID, current.pos.x, current.pos.y, current.width, current.height, current.onClick);
+	 
 	
 	current = mouth;
 	current.pos.x = 830; current.pos.y = 385;
 	current.width = 10; current.height = 30;
 	current.type = "mouth"; 
-	global.view.makeBodyDiv(current.divID, current.pos.x, current.pos.y, current.width, current.height, current.onClick);
+	 
 	
 	
 	current = neck;
 	current.pos.x = 720; current.pos.y = 365;
 	current.width = 80; current.height = 80;
 	current.type = "neck"; 
-	global.view.makeBodyDiv(current.divID, current.pos.x, current.pos.y, current.width, current.height, current.onClick);
+	 
 	
 	
 	current = chest;
 	current.pos.x = 320; current.pos.y = 275;
 	current.width = 400; current.height = 500-current.pos.y;
 	current.type = "chest"; 
-	global.view.makeBodyDiv(current.divID, current.pos.x, current.pos.y, current.width, current.height, current.onClick);
+	 
 	
 	current = legs;
 	current.pos.x = 0; current.pos.y = 325;
 	current.width = 320; current.height = 500-current.pos.y;
 	current.type = "legs"; 
-	global.view.makeBodyDiv(current.divID, current.pos.x, current.pos.y, current.width, current.height, current.onClick);
+	 
 };
 
 Model.prototype.buildCatParts = function(){
@@ -139,13 +140,13 @@ Model.prototype.buildCatParts = function(){
 	var current = body;
 	current.width = 130; current.height = 70;
 	current.type = "body"; 
-	global.view.makeBodyDiv(current.divID, current.pos.x, current.pos.y, current.width, current.height, current.onClick);
+	 
 	
 	
 	var current = head;
 	current.width = 50; current.height = 40;
 	current.type = "head"; 
-	global.view.makeBodyDiv(current.divID, current.pos.x, current.pos.y, current.width, current.height, current.onClick);
+	 
 	current.updatePos = function(){
 		this.pos.x = scope.partMap["catBody"].pos.x + 70;
 		this.pos.y = scope.partMap["catBody"].pos.y - 40;
@@ -154,7 +155,7 @@ Model.prototype.buildCatParts = function(){
 	var current = ear1;
 	current.width = 20; current.height = 20;
 	current.type = "ear"; 
-	global.view.makeBodyDiv(current.divID, current.pos.x, current.pos.y, current.width, current.height, current.onClick);
+	 
 	current.updatePos = function(){
 		this.pos.x = scope.partMap["catHead"].pos.x - 2;
 		this.pos.y = scope.partMap["catHead"].pos.y - 20;
@@ -163,7 +164,7 @@ Model.prototype.buildCatParts = function(){
 	var current = ear2;
 	current.width = 20; current.height = 20;
 	current.type = "ear"; 
-	global.view.makeBodyDiv(current.divID, current.pos.x, current.pos.y, current.width, current.height, current.onClick);
+	 
 	current.updatePos = function(){
 		this.pos.x = scope.partMap["catHead"].pos.x +32;
 		this.pos.y = scope.partMap["catHead"].pos.y - 20;
@@ -172,7 +173,7 @@ Model.prototype.buildCatParts = function(){
 	var current = fpaw1;/////////////////////
 	current.width = 15; current.height = 80;
 	current.type = "fpaw"; 
-	global.view.makeBodyDiv(current.divID, current.pos.x, current.pos.y, current.width, current.height, current.onClick);
+	 
 	current.updatePos = function(){
 		this.pos.x = scope.partMap["catBody"].pos.x + 110;
 		this.pos.y = scope.partMap["catBody"].pos.y + 30;
@@ -181,7 +182,7 @@ Model.prototype.buildCatParts = function(){
 	var current = fpaw2;/////////////////////
 	current.width = 15; current.height = 80;
 	current.type = "fpaw"; 
-	global.view.makeBodyDiv(current.divID, current.pos.x, current.pos.y, current.width, current.height, current.onClick);
+	 
 	current.updatePos = function(){
 		this.pos.x = scope.partMap["catBody"].pos.x + 90;
 		this.pos.y = scope.partMap["catBody"].pos.y + 40;
@@ -190,7 +191,7 @@ Model.prototype.buildCatParts = function(){
 	var current = bpaw1;//////////////////////
 	current.width = 30; current.height = 60;
 	current.type = "bpaw"; 
-	global.view.makeBodyDiv(current.divID, current.pos.x, current.pos.y, current.width, current.height, current.onClick);
+	 
 	current.updatePos = function(){
 		this.pos.x = scope.partMap["catBody"].pos.x + 20;
 		this.pos.y = scope.partMap["catBody"].pos.y + 50;
@@ -199,7 +200,7 @@ Model.prototype.buildCatParts = function(){
 	var current = bpaw2;////////////////////
 	current.width = 30; current.height = 60;
 	current.type = "bpaw"; 
-	global.view.makeBodyDiv(current.divID, current.pos.x, current.pos.y, current.width, current.height, current.onClick);
+	 
 	current.updatePos = function(){
 		this.pos.x = scope.partMap["catBody"].pos.x + 5;
 		this.pos.y = scope.partMap["catBody"].pos.y + 60;
@@ -208,11 +209,24 @@ Model.prototype.buildCatParts = function(){
 	var current = tail;//////////////////////
 	current.width = 80; current.height = 30;
 	current.type = "tail"; 
-	global.view.makeBodyDiv(current.divID, current.pos.x, current.pos.y, current.width, current.height, current.onClick);
+	
 	current.updatePos = function(){
 		this.pos.x = scope.partMap["catBody"].pos.x - 80;
 		this.pos.y = scope.partMap["catBody"].pos.y - 20;
 	};
+};
+
+Model.prototype.finishBuildingParts = function(){
+	var current;
+	for(var i = 0; i < this.humanParts.length; i++){
+		current = this.humanParts[i];
+		current.onClick = this.clickHuman;
+		global.view.makeBodyDiv(current.divID, current.pos.x, current.pos.y, current.width, current.height, current.onClick);
+	}
+	for(var i = 0; i < this.catParts.length; i++){
+		current = this.catParts[i];
+		global.view.makeBodyDiv(current.divID, current.pos.x, current.pos.y, current.width, current.height, current.onClick);
+	}
 };
 
 // Wishlist: add extra pieces
@@ -239,6 +253,14 @@ Model.prototype.moveCatBottomToPosition = function(x, y){
 	var catBodyPos = this.partMap["catBody"].pos;
 	
 	this.updateCatPosition(x + (catBodyPos.x -this.cat.bottom.x), y + (catBodyPos.y - this.cat.bottom.y));
+};
+
+Model.prototype.clickHuman = function(e){
+	var posX = e.pageX - global.view.$canvas.position().left;
+    var posY = e.pageY - global.view.$canvas.position().top;
+	console.log("clicked on Human", posX, posY);
+	
+	global.model.moveCatBottomToPosition(posX, posY);
 };
 	
 Model.prototype.processingSetup = function(){
