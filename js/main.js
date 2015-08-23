@@ -1,9 +1,11 @@
 
 /*
- * Global namespace variable holding important singletons of the tool.
+ * Global namespace variable holding important variables
  * Gives seperate components a means of passing/accessing important information.
  */
-var global={};
+var global={
+	win: false,
+};
 
 // Document is ready for presentation. Let's present!
 window.onload = function(e){ 

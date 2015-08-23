@@ -14,10 +14,15 @@ var Model = function(){
 	
 	this.abilities = [];
 	this.abilityMap = [];
+	this.selectedAbility;
 	
 	this.cat = {
 		bottom: {x:0, y:0},
 	};
+	
+	this.sleep = 100;
+	this.excitement = 0;
+	this.time = 0;
 	
 	this.initAbilities();
 };
@@ -30,14 +35,54 @@ var Model = function(){
 		var voice = this.initPart();
 	 */
 Model.prototype.initAbilities = function(){
-	this.abilities.push({ id:"headAbility" });
-	this.abilities.push({ id:"teethAbility" });
-	this.abilities.push({ id:"tongueAbility" });
-	this.abilities.push({ id:"pawAbility" });
-	this.abilities.push({ id:"voiceAbility" });
+	this.abilities.push({ 
+		divID:"headAbility",
+		excitementBonus: 20,
+		sleepPenalty: 10,
+		excitementScale: .1,
+		cooldown: 5,
+		currCooldown:0
+	 });
+	this.abilities.push({ 
+		divID:"teethAbility",
+		excitementBonus: 40,
+		sleepPenalty: 20,
+		excitementScale: .3,
+		cooldown: 10,
+		excitementThreshold: 50,
+		currCooldown:0
+	 });
+	this.abilities.push({ 
+		divID:"tongueAbility" ,
+		excitementBonus: 10,
+		sleepPenalty: 8,
+		excitementScale: .1,
+		cooldown: 5,
+		currCooldown:0
+	 });
+	this.abilities.push({ 
+		divID:"pawAbility" ,
+		excitementBonus: 30,
+		sleepPenalty: 10,
+		excitementScale: .15,
+		cooldown: 5,
+		excitementThreshold: 20,
+		currCooldown:0
+	 });
+	this.abilities.push({ 
+		divID:"voiceAbility" ,
+		excitementBonus: 15,
+		sleepPenalty: 15,
+		excitementScale: .05,
+		cooldown: 3,
+		currCooldown:0
+	 });
+	
 	for(var i = 0; i < this.abilities.length; i++){
-		this.abilityMap[this.abilities[i].id] = this.abilities[i];
+		this.abilityMap[this.abilities[i].divID] = this.abilities[i];
 	}
+	
+	this.selectedAbility = this.abilityMap["pawAbility"];
 };
 
 Model.prototype.initPart = function(id, owner){
@@ -275,8 +320,33 @@ Model.prototype.clickHuman = function(e){
 	var posX = e.pageX - global.view.$canvas.position().left;
     var posY = e.pageY - global.view.$canvas.position().top;
 	console.log("clicked on Human", posX, posY);
+	if(global.win === false){
+		global.model.moveCatBottomToPosition(posX, posY);
+		global.model.activateAbility();
+	}
+};
+
+// NOTE: Previously, the ability should have been set. 
+Model.prototype.activateAbility = function(){
 	
-	global.model.moveCatBottomToPosition(posX, posY);
+	if(this.selectedAbility.currCooldown === 0){
+		console.log(" to activate ability", this.selectedAbility.divID);
+		//console.log(this.selectedAbility.sleepPenalty, this.excitement, this.selectedAbility.excitementScale);
+		
+		this.excitement += this.selectedAbility.excitementBonus;
+		this.sleep -= this.selectedAbility.sleepPenalty + (this.excitement * this.selectedAbility.excitementScale);
+		if(this.excitement > 100) this.excitement = 100;
+		if(this.sleep > 100) this.sleep = 100;
+		
+		//console.log(this.excitement, this.sleep);
+		
+		var excite = global.bars["exciteValue"];
+		var sleep = global.bars["sleepValue"];
+		global.view.setDivDimensions("exciteValue", excite.scale* global.model.excitement, excite.height); 
+		global.view.setDivDimensions("sleepValue", sleep.scale* global.model.sleep, sleep.height); 
+		
+		this.selectedAbility.currCooldown = this.selectedAbility.cooldown;
+	}
 };
 	
 Model.prototype.processingSetup = function(){
@@ -286,6 +356,40 @@ Model.prototype.processingSetup = function(){
 
 Model.prototype.processingDraw = function(){
 	global.processing.background(100);
+	global.model.time++;
+	
+	
+	if(global.win === false){
+		// Check win condition
+		if(global.model.sleep <= 0){
+			global.view.showWin();
+		}
+		
+		// Check ability unlock
+		
+		//console.log("draw...?");
+		//console.log(global.model.time, global.model.time % 500);
+		if(global.model.time % 10 === 0){
+			for(var i = 0; i < global.model.abilities.length; i++){
+				// Decrement cooldowns
+				if(global.model.abilities[i].currCooldown > 0) global.model.abilities[i].currCooldown--;
+			}
+			
+			if(global.model.time % 20 === 0){
+			//console.log("incrementing values");
+				
+				if(global.model.excitement > 0) global.model.excitement--;
+				var excite = global.bars["exciteValue"];
+				global.view.setDivDimensions("exciteValue", excite.scale* global.model.excitement, excite.height); 
+				
+				if(global.model.time % 40 === 0){
+					if(global.model.sleep < 100) global.model.sleep++;
+					var sleep = global.bars["sleepValue"];
+					global.view.setDivDimensions("sleepValue", sleep.scale* global.model.sleep, sleep.height); 
+				}
+			}
+		}
+	}
 };
 
 return Model;
