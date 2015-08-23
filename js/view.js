@@ -51,6 +51,7 @@ View.prototype.hideOpening = function(){
 View.prototype.showWin = function(){
 	console.log("YAY WIN WIN WIN WIN!!!");
 	global.win = true;
+	global.controller.playSound("purringSounds", 0, 1);
 };
 
 View.prototype.makeBars = function(x, y, width, height){

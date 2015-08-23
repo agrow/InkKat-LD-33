@@ -18,6 +18,12 @@ var Model = function(){
 	
 	this.cat = {
 		bottom: {x:0, y:0},
+		sound: 0,
+	};
+	
+	this.human = {
+		sound: 0,
+		soundQueued: false,
 	};
 	
 	this.sleep = 100;
@@ -38,7 +44,7 @@ Model.prototype.initAbilities = function(){
 	this.abilities.push({ 
 		divID:"headAbility",
 		excitementBonus: 20,
-		sleepPenalty: 10,
+		sleepPenalty: 5,
 		excitementScale: .1,
 		cooldown: 5,
 		currCooldown:0
@@ -46,7 +52,7 @@ Model.prototype.initAbilities = function(){
 	this.abilities.push({ 
 		divID:"teethAbility",
 		excitementBonus: 40,
-		sleepPenalty: 20,
+		sleepPenalty: 15,
 		excitementScale: .3,
 		cooldown: 10,
 		excitementThreshold: 50,
@@ -55,7 +61,7 @@ Model.prototype.initAbilities = function(){
 	this.abilities.push({ 
 		divID:"tongueAbility" ,
 		excitementBonus: 10,
-		sleepPenalty: 8,
+		sleepPenalty: 4,
 		excitementScale: .1,
 		cooldown: 5,
 		currCooldown:0
@@ -72,7 +78,7 @@ Model.prototype.initAbilities = function(){
 	this.abilities.push({ 
 		divID:"voiceAbility" ,
 		excitementBonus: 15,
-		sleepPenalty: 15,
+		sleepPenalty: 8,
 		excitementScale: .05,
 		cooldown: 3,
 		currCooldown:0
@@ -117,6 +123,9 @@ Model.prototype.initGameViewElements = function(){
 	this.updateCatPosition(500, 250);
 	
 	global.controller.playSound("breathingSounds", 0, .5);
+	this.human.soundQueued = true;
+	// Add wiggle room 
+	//this.human.sound += 1;
 };
 
 Model.prototype.buildSleepingParts = function(){
@@ -328,12 +337,39 @@ Model.prototype.clickHuman = function(e){
 	}
 };
 
+/* cat abilities
+	 *  var head = this.initPart();
+		var teeth = this.initPart();
+		var tongue = this.initPart();
+		var paws = this.initPart();
+		var voice = this.initPart();
+	 */
+Model.prototype.activateAbilitySound = function(){
+	console.log("trying to play sound for... ", this.selectedAbility.divID);
+	if(this.selectedAbility.divID === "headAbility"){
+		global.controller.playSound("scratchClothSounds", 0, 1); 
+	} else if(this.selectedAbility.divID === "teethAbility"){
+		global.controller.playSound("biteSounds", 0, 1); 
+	} else if(this.selectedAbility.divID === "tongueAbility"){
+		global.controller.playSound("scratchFaceSounds", 0, 1); 
+	} else if(this.selectedAbility.divID === "pawAbility"){
+		global.controller.playSound("patSounds", 0, 1); 
+	} else if(this.selectedAbility.divID === "voiceAbility"){
+		if(this.excitement < 70){
+			global.controller.playSound("meowSounds", 0, .5); 
+		} else {
+			global.controller.playSound("meowSounds", .5, 1); 
+		}
+	}
+};
+
 // NOTE: Previously, the ability should have been set. 
 Model.prototype.activateAbility = function(){
 	
 	if(this.selectedAbility.currCooldown === 0){
 		console.log(" to activate ability", this.selectedAbility.divID);
 		//console.log(this.selectedAbility.sleepPenalty, this.excitement, this.selectedAbility.excitementScale);
+		this.activateAbilitySound();
 		
 		this.excitement += this.selectedAbility.excitementBonus;
 		this.sleep -= this.selectedAbility.sleepPenalty + (this.excitement * this.selectedAbility.excitementScale);
@@ -363,12 +399,33 @@ Model.prototype.processingDraw = function(){
 	global.processing.textSize(14);
     global.processing.text("Excitement", 15, 30); 
     global.processing.text("Sleep", 15, 70); 
-	
+    
+    
+    
 	if(global.win === false){
 		// Check win condition
 		if(global.model.sleep <= 0){
 			global.view.showWin();
+			return;
 		}
+		
+			// Sound check for human breathing (60 frames / second)
+	    if(global.model.human.sound > 0 && global.model.human.soundQueued === true){
+	    		global.model.human.sound-= 1/60; 
+	    		if(global.model.human.sound <= 0){
+	    			global.model.human.soundQueued = false;
+	    		}
+	    	}
+	    
+		//console.log("human.sound...?", global.model.human.sound, global.model.human.soundQueued);
+	    if(global.model.human.sound <= 0 && global.model.human.soundQueued === false){
+	    	if(global.model.sleep < 50){
+	    		global.controller.playSound("breathingSounds", 0, .5);
+	    	} else {
+	    		global.controller.playSound("breathingSounds", .5, 1);
+	    	}
+	    	global.model.human.soundQueued = true;
+	    }
 		
 		// Check ability unlock
 		

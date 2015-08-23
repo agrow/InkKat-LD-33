@@ -45,19 +45,39 @@ Controller.prototype.playSound = function(category, lowerBound, upperBound){
 		console.log("checking song at percent", index/sounds.length);
 		if(index/sounds.length > lowerBound && index/sounds.length < upperBound){
 			var audio = sounds[Math.floor(index)];
-			console.log("playing...", audio);
-			audio.currentTime = 0;
-			audio.play();
-			global.playing = sounds[Math.floor(index)];
-			return sounds[Math.floor(index)].duration;
+			console.log("audio readyState?", audio.readyState);
+			if(audio.readyState < 1){
+				audio.addEventListener('loadedmetadata', function() {
+				    audio.play(); 
+				    
+				    console.log("playing...", audio);
+					//audio.currentTime = 0;
+					audio.play();
+					global.playing = sounds[Math.floor(index)];
+					console.log("returning duration", audio.duration);
+					global.model.human.sound = audio.duration;
+				});
+				return;
+			} else {
+				audio.play(); 
+			    
+			    console.log("playing...", audio);
+				//audio.currentTime = 0;
+				audio.play();
+				global.playing = sounds[Math.floor(index)];
+				console.log("returning duration", audio.duration);
+				global.model.human.sound = audio.duration;
+				return;
+			}
 		} 
 		count++;
 	}
 	console.warn("Could not grab sound in that bound, try again", category, lowerBound, upperBound);
-	return 0;
+	return;
 };
 
 Controller.prototype.loadSounds = function(){
+	console.log("Loading sounds...");
 	this.breathingSounds.push(new Audio('media/sound/recorded/quietBreath1.mp3'));
 	this.breathingSounds.push(new Audio('media/sound/recorded/closedBreath1.mp3'));
 	this.breathingSounds.push(new Audio('media/sound/recorded/closedBreath2.mp3'));
@@ -76,9 +96,7 @@ Controller.prototype.loadSounds = function(){
 	this.snoringSounds.push(new Audio('media/sound/recorded/snore2.mp3'));
 	this.snoringSounds.push(new Audio('media/sound/recorded/snore3.mp3'));
 	
-	this.purringSounds.push(new Audio('media/sound/recorded/purr1.mp3'));
 	this.purringSounds.push(new Audio('media/sound/recorded/purr2.mp3'));
-	this.purringSounds.push(new Audio('media/sound/recorded/purr3.mp3'));
 	this.purringSounds.push(new Audio('media/sound/recorded/purr4.mp3'));
 	
 	this.meowSounds.push(new Audio('media/sound/recorded/quietMeow1.mp3'));
