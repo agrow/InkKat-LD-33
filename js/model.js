@@ -358,6 +358,9 @@ Model.prototype.processingDraw = function(){
 	global.processing.background(100);
 	global.model.time++;
 	
+	global.processing.textSize(14);
+    global.processing.text("Excitement", 15, 30); 
+    global.processing.text("Sleep", 15, 70); 
 	
 	if(global.win === false){
 		// Check win condition
