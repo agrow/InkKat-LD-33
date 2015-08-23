@@ -5,6 +5,7 @@
  */
 var global={
 	win: false,
+	playing: null,
 };
 
 // Document is ready for presentation. Let's present!

@@ -115,6 +115,8 @@ Model.prototype.initGameViewElements = function(){
 	this.finishBuildingParts();
 	
 	this.updateCatPosition(500, 250);
+	
+	global.controller.playSound("breathingSounds", 0, .5);
 };
 
 Model.prototype.buildSleepingParts = function(){

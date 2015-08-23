@@ -19,6 +19,104 @@ var Controller = function(){
 	//this.makeBars(100, 15, 400, 20);
 	this.makeAbilityDivs(650, 25, 40);
 	
+	// Sounds RANKED BY ENERGY LEVEL!
+	// And sleep depth (0 = low, 100 = high)
+	this.sounds = [];
+	this.breathingSounds = []; this.sounds["breathingSounds"] = this.breathingSounds;
+	this.snoringSounds = []; this.sounds["snoringSounds"] = this.snoringSounds;
+	this.purringSounds = []; this.sounds["purringSounds"] = this.purringSounds;
+	this.meowSounds = []; this.sounds["meowSounds"] = this.meowSounds;
+	this.scratchClothSounds = []; this.sounds["scratchClothSounds"] = this.scratchClothSounds;
+	this.scratchFaceSounds = []; this.sounds["scratchFaceSounds"] = this.scratchFaceSounds;
+	this.patSounds = []; this.sounds["patSounds"] = this.patSounds;
+	this.biteSounds = []; this.sounds["biteSounds"] = this.biteSounds;
+	
+	this.loadSounds();
+	
+};
+
+Controller.prototype.playSound = function(category, lowerBound, upperBound){
+	console.log("checking category", category);
+	var sounds = this.sounds[category];
+	console.log(sounds);
+	var count = 0;
+	while(count < 100){
+		var index = Math.random() * sounds.length;
+		console.log("checking song at percent", index/sounds.length);
+		if(index/sounds.length > lowerBound && index/sounds.length < upperBound){
+			var audio = sounds[Math.floor(index)];
+			console.log("playing...", audio);
+			audio.currentTime = 0;
+			audio.play();
+			global.playing = sounds[Math.floor(index)];
+			return sounds[Math.floor(index)].duration;
+		} 
+		count++;
+	}
+	console.warn("Could not grab sound in that bound, try again", category, lowerBound, upperBound);
+	return 0;
+};
+
+Controller.prototype.loadSounds = function(){
+	this.breathingSounds.push(new Audio('media/sound/recorded/quietBreath1.mp3'));
+	this.breathingSounds.push(new Audio('media/sound/recorded/closedBreath1.mp3'));
+	this.breathingSounds.push(new Audio('media/sound/recorded/closedBreath2.mp3'));
+	this.breathingSounds.push(new Audio('media/sound/recorded/closedBreath3.mp3'));
+	this.breathingSounds.push(new Audio('media/sound/recorded/closedBreath4.mp3'));
+	this.breathingSounds.push(new Audio('media/sound/recorded/closedBreath5.mp3'));
+	this.breathingSounds.push(new Audio('media/sound/recorded/closedBreath6.mp3'));
+	this.breathingSounds.push(new Audio('media/sound/recorded/breath1.mp3'));
+	this.breathingSounds.push(new Audio('media/sound/recorded/breath2.mp3'));
+	this.breathingSounds.push(new Audio('media/sound/recorded/breath3.mp3'));
+	this.breathingSounds.push(new Audio('media/sound/recorded/breath4.mp3'));
+	this.breathingSounds.push(new Audio('media/sound/recorded/breath5.mp3'));
+	this.breathingSounds.push(new Audio('media/sound/recorded/breath6.mp3'));
+	
+	this.snoringSounds.push(new Audio('media/sound/recorded/snore1.mp3'));
+	this.snoringSounds.push(new Audio('media/sound/recorded/snore2.mp3'));
+	this.snoringSounds.push(new Audio('media/sound/recorded/snore3.mp3'));
+	
+	this.purringSounds.push(new Audio('media/sound/recorded/purr1.mp3'));
+	this.purringSounds.push(new Audio('media/sound/recorded/purr2.mp3'));
+	this.purringSounds.push(new Audio('media/sound/recorded/purr3.mp3'));
+	this.purringSounds.push(new Audio('media/sound/recorded/purr4.mp3'));
+	
+	this.meowSounds.push(new Audio('media/sound/recorded/quietMeow1.mp3'));
+	this.meowSounds.push(new Audio('media/sound/recorded/mew1.mp3'));
+	this.meowSounds.push(new Audio('media/sound/recorded/meow4.mp3'));
+	this.meowSounds.push(new Audio('media/sound/recorded/meow1.mp3'));
+	this.meowSounds.push(new Audio('media/sound/recorded/meowPleading1.mp3'));
+	this.meowSounds.push(new Audio('media/sound/recorded/meowPleading2.mp3'));
+	this.meowSounds.push(new Audio('media/sound/recorded/meow3.mp3'));
+	this.meowSounds.push(new Audio('media/sound/recorded/mrow2.mp3'));
+	this.meowSounds.push(new Audio('media/sound/recorded/meow2.mp3'));
+	this.meowSounds.push(new Audio('media/sound/recorded/mrow1.mp3'));
+	this.meowSounds.push(new Audio('media/sound/recorded/mrow3.mp3'));
+	this.meowSounds.push(new Audio('media/sound/recorded/meowLong1.mp3'));
+	this.meowSounds.push(new Audio('media/sound/recorded/meowLong2.mp3'));
+	this.meowSounds.push(new Audio('media/sound/recorded/mrowLong1.mp3'));
+	this.meowSounds.push(new Audio('media/sound/recorded/mrowLong2.mp3'));
+	this.meowSounds.push(new Audio('media/sound/recorded/mrowLong3.mp3'));
+	this.meowSounds.push(new Audio('media/sound/recorded/mrow4.mp3'));
+	this.meowSounds.push(new Audio('media/sound/recorded/sharpMeow1.mp3'));
+	this.meowSounds.push(new Audio('media/sound/recorded/sharpMeow2.mp3'));
+	this.meowSounds.push(new Audio('media/sound/recorded/sharpMeow3.mp3'));
+	
+	this.scratchFaceSounds.push(new Audio('media/sound/recorded/scratch4.mp3'));
+	this.scratchFaceSounds.push(new Audio('media/sound/recorded/scratch5.mp3'));
+	this.scratchFaceSounds.push(new Audio('media/sound/recorded/scratch6.mp3'));
+	this.scratchFaceSounds.push(new Audio('media/sound/recorded/scratch7.mp3'));
+	
+	this.scratchClothSounds.push(new Audio('media/sound/recorded/scratchCloth1.mp3'));
+	this.scratchClothSounds.push(new Audio('media/sound/recorded/scratchCloth2.mp3'));
+	this.scratchClothSounds.push(new Audio('media/sound/recorded/scratchCloth3.mp3'));
+	
+	this.patSounds.push(new Audio('media/sound/recorded/pat1.mp3'));
+	this.patSounds.push(new Audio('media/sound/recorded/pat2.mp3'));
+	
+	this.biteSounds.push(new Audio('media/sound/recorded/bite1.mp3'));
+	this.biteSounds.push(new Audio('media/sound/recorded/bite2.mp3'));
+	this.biteSounds.push(new Audio('media/sound/recorded/bite3.mp3'));
 };
 	
 Controller.prototype.makeAbilityDivs = function(startx, starty, dim){
