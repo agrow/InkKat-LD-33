@@ -6,7 +6,8 @@ var onCanvasClick = function(e){
     var posY = e.pageY - $(this).position().top;
 	console.log("clicked on", posX, posY);
 	if(global.win === false){
-		global.model.moveCatBottomToPosition(posX, posY);
+		//global.model.moveCatBottomToPosition(posX, posY);
+		if(global.model.selectedAbility.divID === "voiceAbility")
 		global.model.activateAbility();
 	}
 };
@@ -30,6 +31,7 @@ var Controller = function(){
 	this.scratchFaceSounds = []; this.sounds["scratchFaceSounds"] = this.scratchFaceSounds;
 	this.patSounds = []; this.sounds["patSounds"] = this.patSounds;
 	this.biteSounds = []; this.sounds["biteSounds"] = this.biteSounds;
+	this.winSounds = []; this.sounds["winSounds"] = this.winSounds;
 	
 	this.loadSounds();
 	
@@ -98,6 +100,8 @@ Controller.prototype.loadSounds = function(){
 	
 	this.purringSounds.push(new Audio('media/sound/recorded/purr2.mp3'));
 	this.purringSounds.push(new Audio('media/sound/recorded/purr4.mp3'));
+	this.purringSounds[0].loop = true;
+	this.purringSounds[1].loop = true;
 	
 	this.meowSounds.push(new Audio('media/sound/recorded/quietMeow1.mp3'));
 	this.meowSounds.push(new Audio('media/sound/recorded/mew1.mp3'));
@@ -135,6 +139,8 @@ Controller.prototype.loadSounds = function(){
 	this.biteSounds.push(new Audio('media/sound/recorded/bite1.mp3'));
 	this.biteSounds.push(new Audio('media/sound/recorded/bite2.mp3'));
 	this.biteSounds.push(new Audio('media/sound/recorded/bite3.mp3'));
+	
+	this.winSounds.push(new Audio('media/sound/recorded/youwin.mp3'));
 };
 	
 Controller.prototype.makeAbilityDivs = function(startx, starty, dim){

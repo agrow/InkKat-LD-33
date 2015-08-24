@@ -130,6 +130,7 @@ Model.prototype.initGameViewElements = function(){
 
 Model.prototype.buildSleepingParts = function(){
 	// NOTE: ORDER MATTERS. THis is the order that update will run.
+	var whole = this.initPart("humanWhole", "human");;
 	var head = this.initPart("humanHead", "human");
 	var eye1 = this.initPart("humanEye1", "human");
 	var eye2 = this.initPart("humanEye2", "human");
@@ -138,7 +139,15 @@ Model.prototype.buildSleepingParts = function(){
 	//var hair = this.initPart("humanHair", "human");
 	var neck = this.initPart("humanNeck", "human");
 	var chest = this.initPart("humanChest", "human");
-	var legs = this.initPart("humanLegs", "human");
+	var legs1 = this.initPart("humanLegs1", "human");
+	var legs2 = this.initPart("humanLegs2", "human");
+	
+	var current = whole;
+	current.pos.x = 0; current.pos.y = 150;
+	current.width = 1000; current.height = 375;
+	current.type = "whole";
+	current.img="bg.png"; 
+	
 	
 	var current = head;
 	current.pos.x = 800; current.pos.y = 325;
@@ -170,14 +179,14 @@ Model.prototype.buildSleepingParts = function(){
 	 
 	
 	current = mouth;
-	current.pos.x = 830; current.pos.y = 385;
-	current.width = 10; current.height = 30;
+	current.pos.x = 787; current.pos.y = 377;
+	current.width = 30; current.height = 30;
 	current.type = "mouth"; 
-	 
+	current.img = "humanMouth.gif";
 	
 	
 	current = neck;
-	current.pos.x = 720; current.pos.y = 365;
+	current.pos.x = 725; current.pos.y = 355;
 	current.width = 80; current.height = 80;
 	current.type = "neck"; 
 	 
@@ -189,9 +198,14 @@ Model.prototype.buildSleepingParts = function(){
 	current.type = "chest"; 
 	 
 	
-	current = legs;
-	current.pos.x = 0; current.pos.y = 325;
-	current.width = 320; current.height = 500-current.pos.y;
+	current = legs1;
+	current.pos.x = 0; current.pos.y = 350;
+	current.width = 180; current.height = 500-current.pos.y;
+	current.type = "legs"; 
+	
+	current = legs2;
+	current.pos.x = 180; current.pos.y = 260;
+	current.width = 180; current.height = 500-current.pos.y;
 	current.type = "legs"; 
 	 
 };
@@ -200,92 +214,111 @@ Model.prototype.buildCatParts = function(){
 	// NOTE: ORDER MATTERS. THis is the order that update will run.
 	var body = this.initPart("catBody", "cat");
 	var head = this.initPart("catHead", "cat");
-	var ear1 = this.initPart("catEar1", "cat");
-	var ear2 = this.initPart("catEar2", "cat");
+	var eyes = this.initPart("catEyes", "cat");
+	var mouth = this.initPart("catMouth", "cat");
+	var ears = this.initPart("catEars", "cat");
 	var fpaw1 = this.initPart("catFpaw1", "cat");
 	var fpaw2 = this.initPart("catFpaw2", "cat");
 	var bpaw1 = this.initPart("catBpaw1", "cat");
 	var bpaw2 = this.initPart("catBpaw2", "cat");
 	var tail = this.initPart("catTail", "cat");
 	
-	
 	var current = body;
-	current.width = 130; current.height = 70;
+	current.width = 130; current.height = 80;
 	current.type = "body"; 
-	 
-	
+	current.img = "catBody2.png";
 	
 	var current = head;
-	current.width = 50; current.height = 40;
+	current.width = 100; current.height = 40;
 	current.type = "head"; 
+	current.img = "catHead.png";
 	 
 	current.updatePos = function(){
-		this.pos.x = scope.partMap["catBody"].pos.x + 70;
+		this.pos.x = scope.partMap["catBody"].pos.x + 60;
 		this.pos.y = scope.partMap["catBody"].pos.y - 40;
 	};
 	
-	var current = ear1;
-	current.width = 20; current.height = 20;
-	current.type = "ear"; 
+	var current = eyes;
+	current.width = 50; current.height = 20;
+	current.type = "eye"; 
 	 
 	current.updatePos = function(){
-		this.pos.x = scope.partMap["catHead"].pos.x - 2;
-		this.pos.y = scope.partMap["catHead"].pos.y - 20;
+		this.pos.x = scope.partMap["catHead"].pos.x + 25;
+		this.pos.y = scope.partMap["catHead"].pos.y + 10;
 	};
+	current.img = "catBlink.gif";
 	
-	var current = ear2;
-	current.width = 20; current.height = 20;
+	var current = mouth;
+	current.width = 30; current.height = 30;
+	current.type = "mouth"; 
+	 
+	current.updatePos = function(){
+		this.pos.x = scope.partMap["catHead"].pos.x + 35;
+		this.pos.y = scope.partMap["catHead"].pos.y + 20;
+	};
+	current.img = "catMouth.png";
+	
+	
+	var current = ears;
+	current.width = 40; current.height = 30;
 	current.type = "ear"; 
 	 
 	current.updatePos = function(){
-		this.pos.x = scope.partMap["catHead"].pos.x +32;
-		this.pos.y = scope.partMap["catHead"].pos.y - 20;
+		this.pos.x = scope.partMap["catHead"].pos.x + 30;
+		this.pos.y = scope.partMap["catHead"].pos.y - 15;
 	};
+	current.img = "catEars.png";
+	
 	
 	var current = fpaw1;/////////////////////
-	current.width = 15; current.height = 80;
+	current.width = 20; current.height = 75;
 	current.type = "fpaw"; 
 	 
 	current.updatePos = function(){
 		this.pos.x = scope.partMap["catBody"].pos.x + 110;
 		this.pos.y = scope.partMap["catBody"].pos.y + 30;
 	};
+	current.img = "frontLeg.png";
 	
 	var current = fpaw2;/////////////////////
-	current.width = 15; current.height = 80;
+	current.width = 20; current.height = 75;
 	current.type = "fpaw"; 
 	 
 	current.updatePos = function(){
 		this.pos.x = scope.partMap["catBody"].pos.x + 90;
 		this.pos.y = scope.partMap["catBody"].pos.y + 40;
 	};
+	current.img = "frontLeg_2.png";
 	
 	var current = bpaw1;//////////////////////
-	current.width = 30; current.height = 60;
+	current.width = 40; current.height = 60;
 	current.type = "bpaw"; 
 	 
 	current.updatePos = function(){
 		this.pos.x = scope.partMap["catBody"].pos.x + 20;
-		this.pos.y = scope.partMap["catBody"].pos.y + 50;
+		this.pos.y = scope.partMap["catBody"].pos.y + 40;
 	};
+	current.img = "backLeg.png";
 	
 	var current = bpaw2;////////////////////
-	current.width = 30; current.height = 60;
+	current.width = 40; current.height = 60;
 	current.type = "bpaw"; 
 	 
 	current.updatePos = function(){
 		this.pos.x = scope.partMap["catBody"].pos.x + 5;
-		this.pos.y = scope.partMap["catBody"].pos.y + 60;
+		this.pos.y = scope.partMap["catBody"].pos.y + 50;
 	};
+	current.img = "backLeg_2.png";
 	
 	var current = tail;//////////////////////
-	current.width = 80; current.height = 30;
+	current.width = 80; current.height = 80;
 	current.type = "tail"; 
 	
 	current.updatePos = function(){
-		this.pos.x = scope.partMap["catBody"].pos.x - 80;
-		this.pos.y = scope.partMap["catBody"].pos.y - 20;
+		this.pos.x = scope.partMap["catBody"].pos.x - 20;
+		this.pos.y = scope.partMap["catBody"].pos.y - 55;
 	};
+	current.img = "tail_cropped.gif";
 };
 
 Model.prototype.finishBuildingParts = function(){
@@ -294,11 +327,23 @@ Model.prototype.finishBuildingParts = function(){
 		current = this.humanParts[i];
 		current.onClick = this.clickHuman;
 		global.view.makeBodyDiv(current.divID, current.pos.x, current.pos.y, current.width, current.height, current.onClick);
+		if(current.img !== undefined){
+			global.view.appendImgToDiv(current.img, current.divID, current.width, current.height);
+		}
 	}
 	for(var i = 0; i < this.catParts.length; i++){
 		current = this.catParts[i];
 		global.view.makeBodyDiv(current.divID, current.pos.x, current.pos.y, current.width, current.height, current.onClick);
+		if(current.img !== undefined){
+			global.view.appendImgToDiv(current.img, current.divID, current.width, current.height);
+		}
 	}
+	
+	$("#catBody").css("zIndex", 2);
+	$("#catFpaw2").css("zIndex", 3);
+	$("#catBpaw2").css("zIndex", 3);
+	
+	$("#humanMouth").css("zIndex", 2);
 };
 
 // Wishlist: add extra pieces
@@ -332,8 +377,13 @@ Model.prototype.clickHuman = function(e){
     var posY = e.pageY - global.view.$canvas.position().top;
 	console.log("clicked on Human", posX, posY);
 	if(global.win === false){
-		global.model.moveCatBottomToPosition(posX, posY);
-		global.model.activateAbility();
+		if($(this)[0].id !== "humanWhole"){
+			global.model.moveCatBottomToPosition(posX, posY);
+			global.model.activateAbility();
+		} else {
+			if(global.model.selectedAbility.divID === "voiceAbility")
+			global.model.activateAbility();
+		}
 	}
 };
 

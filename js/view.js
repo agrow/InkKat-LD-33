@@ -49,9 +49,18 @@ View.prototype.hideOpening = function(){
 };
 
 View.prototype.showWin = function(){
+
 	console.log("YAY WIN WIN WIN WIN!!!");
 	global.win = true;
-	global.controller.playSound("purringSounds", 0, 1);
+	
+	setTimeout(function(){
+		global.controller.playSound("winSounds", 0, 1);	
+		
+		setTimeout(function(){
+        	global.controller.playSound("purringSounds", 0, 1);	
+    	}, 2500);	
+    }, 500);
+	
 };
 
 View.prototype.makeBars = function(x, y, width, height){
@@ -151,6 +160,16 @@ View.prototype.setDivDimensions = function(divID, width, height){
 	$(str).width(width);
 	$(str).height(height);
 	//console.log("Setting div dimensions", divID, width, height);
+};
+
+View.prototype.appendImgToDiv = function(img, div, width, height, pos){
+	var image = document.createElement("IMG");
+	image.id = img;
+	image.src = "media/art/" + img;
+	document.getElementById(div).appendChild(image);
+	document.getElementById(img).width = width;
+	//document.getElementById(img).height = height;
+	if(pos !== undefined) this.setDivPos(img, pos);
 };
 
 return View;
