@@ -18,7 +18,7 @@ var Controller = function(){
 	this.abilityDivs = [];
 	this.selectDiv;
 	//this.makeBars(100, 15, 400, 20);
-	this.makeAbilityDivs(650, 25, 40);
+	this.makeAbilityDivs(580, 25, 20);
 	
 	// Sounds RANKED BY ENERGY LEVEL!
 	// And sleep depth (0 = low, 100 = high)
@@ -38,36 +38,36 @@ var Controller = function(){
 };
 
 Controller.prototype.playSound = function(category, lowerBound, upperBound){
-	console.log("checking category", category);
+	//console.log("checking category", category);
 	var sounds = this.sounds[category];
 	console.log(sounds);
 	var count = 0;
 	while(count < 100){
 		var index = Math.random() * sounds.length;
-		console.log("checking song at percent", index/sounds.length);
+		//console.log("checking song at percent", index/sounds.length);
 		if(index/sounds.length > lowerBound && index/sounds.length < upperBound){
 			var audio = sounds[Math.floor(index)];
-			console.log("audio readyState?", audio.readyState);
+			//console.log("audio readyState?", audio.readyState);
 			if(audio.readyState < 1){
 				audio.addEventListener('loadedmetadata', function() {
 				    audio.play(); 
 				    
-				    console.log("playing...", audio);
+				    //console.log("playing...", audio);
 					//audio.currentTime = 0;
 					audio.play();
 					global.playing = sounds[Math.floor(index)];
-					console.log("returning duration", audio.duration);
+					//console.log("returning duration", audio.duration);
 					global.model.human.sound = audio.duration;
 				});
 				return;
 			} else {
 				audio.play(); 
 			    
-			    console.log("playing...", audio);
+			    //console.log("playing...", audio);
 				//audio.currentTime = 0;
 				audio.play();
 				global.playing = sounds[Math.floor(index)];
-				console.log("returning duration", audio.duration);
+				//console.log("returning duration", audio.duration);
 				global.model.human.sound = audio.duration;
 				return;
 			}
@@ -149,7 +149,7 @@ Controller.prototype.makeAbilityDivs = function(startx, starty, dim){
 	for(var i = 0; i < global.model.abilities.length; i++){
 		var params = {
 			id: global.model.abilities[i].divID, top: starty + global.canvasHeightOffset, left: widthMarker+ global.canvasWidthOffset,
-			width: dim, height:dim, class: "abilityDiv",
+			width: dim*3, height:dim, class: "abilityDiv",
 			onClick: function(){
 				if(global.win === false){
 					global.model.selectedAbility = global.model.abilityMap[$(this).attr('id')];
@@ -162,18 +162,19 @@ Controller.prototype.makeAbilityDivs = function(startx, starty, dim){
 			id: params.id,
 			$div: $div
 		};
+		$div.text(global.model.abilities[i].display);
 		$(document.body).append($div);
 		$div.offset({top: params.top, left: params.left});
-		$div.css("zIndex", 10);
+		$div.css("zIndex", 2);
 		global.model.abilities[i].$div = $div;
 		this.abilityDivs.push($div);
 		
-		widthMarker += 60;
+		widthMarker += 80;
 	}
 	
 	params = {
-		id: "abilitySelect", top: starty - 5 + global.canvasHeightOffset, left: widthMarker+ global.canvasWidthOffset,
-		width: dim +10, height:dim + 10, class: "abilityDiv"
+		id: "abilitySelect", top: starty - 7 + global.canvasHeightOffset, left: widthMarker+ global.canvasWidthOffset,
+		width: dim*3 +12, height:dim + 12, class: "abilityDiv"
 	};
 	var $div = global.view.makeDiv(params);
 	global.bars[params.id] = {
@@ -182,7 +183,7 @@ Controller.prototype.makeAbilityDivs = function(startx, starty, dim){
 	};
 	$(document.body).append($div);
 	$div.offset({top: params.top, left: params.left});
-	$div.css("zIndex", 5);
+	$div.css("zIndex", 1);
 	this.selectDiv = $div;
 		
 	this.selectAbility();
@@ -192,7 +193,7 @@ Controller.prototype.selectAbility = function(){
 	console.log("selecting ability", global.model.selectedAbility.divID);
 	$div = global.model.selectedAbility.$div;
 	var offset = $div.offset();
-	global.view.setDivPos("abilitySelect", {x:offset.left-5 - global.canvasWidthOffset, y:offset.top-5 - global.canvasHeightOffset});
+	global.view.setDivPos("abilitySelect", {x:offset.left-7 - global.canvasWidthOffset, y:offset.top-7 - global.canvasHeightOffset});
 };
 
 Controller.prototype.lockAbility = function(ability){

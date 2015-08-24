@@ -18,5 +18,7 @@ var init = function(){
 	global.view = new View();
 	global.controller = new Controller();
 	
+	//global.view.generateSplashScreen();
+	
 	global.model.initGameViewElements();
 };

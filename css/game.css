@@ -15,6 +15,14 @@ img{
     overflow: hidden;
 }
 
+#sleepValue{
+	background-color: #4567BB;
+}
+
+#exciteValue{
+	background-color: #BB4567;
+}
+
 .barDiv{
 	position:absolute;
 	border-color: #000000;
@@ -29,6 +37,9 @@ img{
     border-style: solid;
     border-width: 2px;
     margin: 0px;
+    text-align: center;
+    font-family:verdana;
+    color: white;
 }
 
 #abilitySelect{
@@ -37,4 +48,8 @@ img{
     border-style: solid;
     border-width: 3px;
     margin: 0px;
+}
+
+.splash{
+	
 }

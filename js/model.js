@@ -43,16 +43,18 @@ var Model = function(){
 Model.prototype.initAbilities = function(){
 	this.abilities.push({ 
 		divID:"headAbility",
+		display: "Nuzzle",
 		excitementBonus: 20,
-		sleepPenalty: 5,
+		sleepPenalty: 4,
 		excitementScale: .1,
 		cooldown: 5,
 		currCooldown:0
 	 });
 	this.abilities.push({ 
 		divID:"teethAbility",
+		display: "Bite",
 		excitementBonus: 40,
-		sleepPenalty: 15,
+		sleepPenalty: 10,
 		excitementScale: .3,
 		cooldown: 10,
 		excitementThreshold: 50,
@@ -60,16 +62,18 @@ Model.prototype.initAbilities = function(){
 	 });
 	this.abilities.push({ 
 		divID:"tongueAbility" ,
+		display: "Lick",
 		excitementBonus: 10,
-		sleepPenalty: 4,
+		sleepPenalty: 2,
 		excitementScale: .1,
 		cooldown: 5,
 		currCooldown:0
 	 });
 	this.abilities.push({ 
+		display: "Paw",
 		divID:"pawAbility" ,
 		excitementBonus: 30,
-		sleepPenalty: 10,
+		sleepPenalty: 8,
 		excitementScale: .15,
 		cooldown: 5,
 		excitementThreshold: 20,
@@ -77,8 +81,9 @@ Model.prototype.initAbilities = function(){
 	 });
 	this.abilities.push({ 
 		divID:"voiceAbility" ,
+		display: "Meow",
 		excitementBonus: 15,
-		sleepPenalty: 8,
+		sleepPenalty: 5,
 		excitementScale: .05,
 		cooldown: 3,
 		currCooldown:0
@@ -88,7 +93,7 @@ Model.prototype.initAbilities = function(){
 		this.abilityMap[this.abilities[i].divID] = this.abilities[i];
 	}
 	
-	this.selectedAbility = this.abilityMap["pawAbility"];
+	this.selectedAbility = this.abilityMap["voiceAbility"];
 };
 
 Model.prototype.initPart = function(id, owner){
@@ -150,8 +155,8 @@ Model.prototype.buildSleepingParts = function(){
 	
 	
 	var current = head;
-	current.pos.x = 800; current.pos.y = 325;
-	current.width = 1000-current.pos.x; current.height = 150;
+	current.pos.x = 720; current.pos.y = 315;
+	current.width = 1000-current.pos.x; current.height = 180;
 	current.type = "head"; 
 	//id, x, y, width, height, onClick
 	 
@@ -182,7 +187,7 @@ Model.prototype.buildSleepingParts = function(){
 	current.pos.x = 787; current.pos.y = 377;
 	current.width = 30; current.height = 30;
 	current.type = "mouth"; 
-	current.img = "humanMouth.gif";
+	current.img = "humanMouth.png";
 	
 	
 	current = neck;
@@ -336,12 +341,13 @@ Model.prototype.finishBuildingParts = function(){
 		global.view.makeBodyDiv(current.divID, current.pos.x, current.pos.y, current.width, current.height, current.onClick);
 		if(current.img !== undefined){
 			global.view.appendImgToDiv(current.img, current.divID, current.width, current.height);
+			$("#" + current.divID).css("zIndex", 4);
 		}
 	}
 	
-	$("#catBody").css("zIndex", 2);
-	$("#catFpaw2").css("zIndex", 3);
-	$("#catBpaw2").css("zIndex", 3);
+	$("#catBody").css("zIndex", 5);
+	$("#catFpaw2").css("zIndex", 6);
+	$("#catBpaw2").css("zIndex", 6);
 	
 	$("#humanMouth").css("zIndex", 2);
 };

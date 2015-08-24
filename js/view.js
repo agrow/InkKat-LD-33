@@ -44,14 +44,36 @@ var View = function(){
 	this.makeBars(100, 15, 400, 20);
 };
 
+View.prototype.generateSplashScreen = function(){
+	console.log("making openings splash?");
+	this.makeDiv({
+		id: "openingSplash",  class: "splash",
+		top: global.canvasHeightOffset, left: global.canvasWidthOffset, 
+		width:global.canvasWidth, height:global.canvasHeight,
+		onClick: function(){
+			global.view.hideOpening();
+		}
+	});
+	
+	this.$opening = $("openingSplash");
+	
+	this.$opening.css("zIndex", 3);
+};
+
 View.prototype.hideOpening = function(){
 	console.log("starting...");
+	this.$opening.hide(); 
+};
+
+View.prototype.restart = function(){
+	
 };
 
 View.prototype.showWin = function(){
 
 	console.log("YAY WIN WIN WIN WIN!!!");
 	global.win = true;
+	
 	
 	setTimeout(function(){
 		global.controller.playSound("winSounds", 0, 1);	
@@ -78,11 +100,11 @@ View.prototype.makeBars = function(x, y, width, height){
 	};
 	$(document.body).append($div);
 	$div.offset({top: params.top, left: params.left});
-	$div.css("zIndex", 10);
+	$div.css("zIndex", 1);
 	
 	params = {
 		id: "exciteValue", top: y + global.canvasHeightOffset, left: x+ global.canvasWidthOffset,
-		width: totalWidth, height:height, class: "barDiv" // VISABILITY TEST
+		width: 0, height:height, class: "barDiv" // VISABILITY TEST
 	};
 	$div = this.makeDiv(params);
 	global.bars[params.id] = {
@@ -93,7 +115,7 @@ View.prototype.makeBars = function(x, y, width, height){
 	};
 	$(document.body).append($div);
 	$div.offset({top: params.top, left: params.left});
-	$div.css("zIndex", 15);
+	$div.css("zIndex", 2);
 	
 	params = {
 		id: "sleepFull", top: y + height*2 + global.canvasHeightOffset, left: x+ global.canvasWidthOffset,
@@ -106,7 +128,7 @@ View.prototype.makeBars = function(x, y, width, height){
 	};
 	$(document.body).append($div);
 	$div.offset({top: params.top, left: params.left});
-	$div.css("zIndex", 10);
+	$div.css("zIndex", 1);
 	
 	params = {
 		id: "sleepValue", top: y + height*2 + global.canvasHeightOffset, left: x+ global.canvasWidthOffset,
@@ -121,7 +143,7 @@ View.prototype.makeBars = function(x, y, width, height){
 	};
 	$(document.body).append($div);
 	$div.offset({top: params.top, left: params.left});
-	$div.css("zIndex", 15);
+	$div.css("zIndex", 2);
 };
 	
 View.prototype.makeBodyDiv = function(id, x, y, width, height, onClick){
@@ -171,6 +193,7 @@ View.prototype.appendImgToDiv = function(img, div, width, height, pos){
 	//document.getElementById(img).height = height;
 	if(pos !== undefined) this.setDivPos(img, pos);
 };
+
 
 return View;
 })();
